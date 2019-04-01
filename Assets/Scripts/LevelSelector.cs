@@ -8,10 +8,11 @@ public class LevelSelector : MonoBehaviour
 {
     public int difficultyLevel;
     public Slider difficultySlider;
+    public Text difficultyText;
     // Start is called before the first frame update
     void Start()
     {
-
+        SetDifficulty();
     }
 
     // Update is called once per frame
@@ -29,5 +30,14 @@ public class LevelSelector : MonoBehaviour
     {
         difficultyLevel = (int)difficultySlider.value;
         GameManager.instance.SetDifficulty(difficultyLevel);
+        if(difficultyLevel == 1){
+            difficultyText.text = "Easy";
+        }else if(difficultyLevel == 2){
+            difficultyText.text = "Normal";
+        }
+        else if (difficultyLevel == 3)
+        {
+            difficultyText.text = "Hard";
+        }
     }
 }

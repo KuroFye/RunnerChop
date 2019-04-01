@@ -8,8 +8,9 @@ public class PlatformSpawner : MonoBehaviour
     [SerializeField]
     public List<SpawnableObject> objectsToSpawn = new List<SpawnableObject>();
 
-    public float spaceChance = 0.3f, minSpaceDistance = 1.2f, maxSpaceDistance = 2.5f;
-    float countdown;
+    public float spaceChance = 0.3f, minSpaceDistance = 7.5f, maxSpaceDistance = 18f;
+    GameObject lastPlatformRef;
+    float distance;
     bool isAfterHole = false;
     // Start is called before the first frame update
     void Start()
@@ -23,16 +24,16 @@ public class PlatformSpawner : MonoBehaviour
 
     }
 
-    private IEnumerator Countdown()
+    private IEnumerator CheckDistance()
     {
-        float normalizedTime = 0;
+        float currentDistance = Vector3.Distance(gameObject.transform.position, lastPlatformRef.transform.position);
         
-        while (normalizedTime <= countdown)
+        while (currentDistance < distance)
         {
-            normalizedTime += Time.deltaTime;
+            currentDistance = Vector3.Distance(gameObject.transform.position, lastPlatformRef.transform.position);
             yield return null;
         }
-        Instantiate(objectsToSpawn[1].objectRef, (gameObject.transform.position + objectsToSpawn[1].offsetPosition), objectsToSpawn[1].offsetRotation);
+        lastPlatformRef = Instantiate(objectsToSpawn[1].objectRef, (gameObject.transform.position + objectsToSpawn[1].offsetPosition), objectsToSpawn[1].offsetRotation);
     }
 
     private void OnTriggerExit(Collider other)
@@ -42,16 +43,12 @@ public class PlatformSpawner : MonoBehaviour
             float chance = Random.Range(0, 1f);
             if(chance < spaceChance)
             {                
-                float fullValue, restValue;
-                restValue = GameManager.instance.totalSpeedMultiplier % 1f;
-                fullValue = GameManager.instance.totalSpeedMultiplier - restValue;
-                float timeModifier = (1f / fullValue) * (1f - restValue);
-                countdown = Random.Range(minSpaceDistance, maxSpaceDistance) * timeModifier;
-                StartCoroutine("Countdown");
+                distance = Random.Range(minSpaceDistance, maxSpaceDistance);
+                StartCoroutine("CheckDistance");
             }
             else
             {
-                Instantiate(objectsToSpawn[0].objectRef, (gameObject.transform.position + objectsToSpawn[0].offsetPosition), objectsToSpawn[0].offsetRotation);
+                lastPlatformRef = Instantiate(objectsToSpawn[0].objectRef, (gameObject.transform.position + objectsToSpawn[0].offsetPosition), objectsToSpawn[0].offsetRotation);
             }            
         }
 
