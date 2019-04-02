@@ -159,6 +159,9 @@ public class Locomotion : MonoBehaviour
 
     public void RestartLocomotion()
     {
+        StopCoroutine("CrouchCountdown");
+        CrouchUp();
+        canCrouch = true;        
         anim.SetFloat("Forward", 1f);
         rigidbody.velocity = new Vector3(0, 0, 0);
     }

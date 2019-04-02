@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkillSlam : MonoBehaviour
+public class SkillKick : MonoBehaviour
 {
+
     public CapsuleCollider collider;
-    public float colliderActivationDuration = 0.65f;
-    public float slamStrength = -500f;
-    float cooldown;
+    public float colliderActivationDuration = 0.65f, cooldown = 0.5f;
     GameObject playerRef;
     Locomotion playerLocomotion;
     PlayerController playerController;
-    bool didSlam = false;
+    bool didKick = false;
 
     // Start is called before the first frame update
     void Start()
@@ -19,25 +18,23 @@ public class SkillSlam : MonoBehaviour
         playerRef = GameObject.FindGameObjectWithTag("Player");
         playerLocomotion = playerRef.GetComponent<Locomotion>();
         playerController = playerRef.GetComponent<PlayerController>();
-        cooldown = playerLocomotion.crouchCooldown;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Crouch"))
+        if (Input.GetButtonDown("Fire1"))
         {
-            if (!didSlam && !playerController.skillsOnCooldown)
+            if (!didKick && !playerController.skillsOnCooldown)
             {
-                didSlam = true;
+                didKick = true;
                 playerController.skillsOnCooldown = true;
-                playerLocomotion.Jump(slamStrength);
+                playerRef.GetComponent<Rigidbody>().isKinematic = true;
                 collider.gameObject.SetActive(true);
                 StartCoroutine("Countdown");
             }
-            
-        }
 
+        }
     }
 
     private IEnumerator Countdown()
@@ -50,19 +47,20 @@ public class SkillSlam : MonoBehaviour
         }
         collider.gameObject.SetActive(false);
         playerController.skillsOnCooldown = false;
+        playerRef.GetComponent<Rigidbody>().isKinematic = false;
         while (normalizedTime <= cooldown)
         {
             normalizedTime += Time.deltaTime;
             yield return null;
         }
-        didSlam = false;
+        didKick = false;
     }
 
     public void RestartSkill()
     {
         StopCoroutine("Countdown");
-        didSlam = false;
+        didKick = false;
         collider.gameObject.SetActive(false);
+        playerRef.GetComponent<Rigidbody>().isKinematic = false;
     }
-
 }

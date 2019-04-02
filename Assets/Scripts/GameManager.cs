@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
 
         if(difficulty == 1)
         {
-            gameSpeed = -0.05f;
+            baseGameSpeed = -0.1f;
             speedMultiplier = 1.01f;
             scoreMultiplier = 1f;
             gameSpeedIncreaseDelay = 5f;
@@ -68,17 +68,17 @@ public class GameManager : MonoBehaviour
 
         if(difficulty == 2)
         {
-            gameSpeed = -0.075f;
+            baseGameSpeed = -0.125f;
             speedMultiplier = 1.02f;
-            scoreMultiplier = 2f;
+            scoreMultiplier = 2.5f;
             gameSpeedIncreaseDelay = 4f;
         }
 
         if(difficulty == 3)
         {
-            gameSpeed = -0.1f;
+            baseGameSpeed = -0.15f;
             speedMultiplier = 1.03f;
-            scoreMultiplier = 3f;
+            scoreMultiplier = 4f;
             gameSpeedIncreaseDelay = 3.5f;
         }
 
@@ -201,7 +201,9 @@ public class GameManager : MonoBehaviour
         playerRef.gameObject.transform.position = playerStart.transform.position;
         playerRef.GetComponent<Locomotion>().RestartLocomotion();
         playerRef.GetComponentInChildren<SkillSlam>().RestartSkill();
-        
+        playerRef.GetComponentInChildren<SkillKick>().RestartSkill();
+        playerRef.GetComponent<PlayerController>().skillsOnCooldown = false;
+
         gameSpeed = baseGameSpeed;
         Physics.IgnoreLayerCollision(9, 10, false);
         StartCoroutine("PlayerInvulnerabilityCountdown");

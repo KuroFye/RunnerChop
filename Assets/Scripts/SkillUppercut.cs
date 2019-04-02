@@ -5,10 +5,11 @@ using UnityEngine;
 public class SkillUppercut : MonoBehaviour
 {
     public CapsuleCollider collider;
-    public float colliderActivationDuration = 0.75f;
+    public float colliderActivationDuration = 0.75f, skillCooldown = 0.5f;
     public float jumpStrength = 500f;
     GameObject playerRef;
     Locomotion playerLocomotion;
+    PlayerController playerController;
     bool didUppercut = false;
 
     // Start is called before the first frame update
@@ -16,6 +17,7 @@ public class SkillUppercut : MonoBehaviour
     {
         playerRef = GameObject.FindGameObjectWithTag("Player");
         playerLocomotion = playerRef.GetComponent<Locomotion>();
+        playerController = playerRef.GetComponent<PlayerController>();
                 
     }
 
@@ -24,9 +26,10 @@ public class SkillUppercut : MonoBehaviour
     {
         if (!playerLocomotion.m_IsGrounded)
         {
-            if (Input.GetButtonDown("Jump") && !didUppercut)
+            if (Input.GetButtonDown("Jump") && !didUppercut && !playerController.skillsOnCooldown)
             {
                 didUppercut = true;
+                playerController.skillsOnCooldown = true;
                 playerLocomotion.Jump(jumpStrength);
                 collider.gameObject.SetActive(true);
                 StartCoroutine("Countdown");
@@ -44,12 +47,20 @@ public class SkillUppercut : MonoBehaviour
     private IEnumerator Countdown()
     {
         float normalizedTime = 0;
+        while(normalizedTime <= skillCooldown)
+        {
+            playerController.skillsOnCooldown = false;
+            normalizedTime += Time.deltaTime;
+            yield return null;
+        }
+
         while (normalizedTime <= colliderActivationDuration)
         {
             normalizedTime += Time.deltaTime;
             yield return null;
         }
         collider.gameObject.SetActive(false);
+        
     }
 
     void OnEnable()

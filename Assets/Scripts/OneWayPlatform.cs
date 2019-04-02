@@ -5,10 +5,12 @@ using UnityEngine;
 public class OneWayPlatform : MonoBehaviour
 {
     Locomotion locomotionRef;
+    bool ignoringLayer = true;
     // Start is called before the first frame update
     void Start()
     {
         locomotionRef = GetComponent<Locomotion>();
+        Physics.IgnoreLayerCollision(9, 10, true);
     }
 
     // Update is called once per frame
@@ -24,6 +26,7 @@ public class OneWayPlatform : MonoBehaviour
         
     }
 
+    /*
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag.Equals("OneWayPlatformTrigger"))
@@ -31,12 +34,21 @@ public class OneWayPlatform : MonoBehaviour
             Physics.IgnoreLayerCollision(9,10,true);
         }
     }
+    */
 
     private void OnTriggerExit(Collider other)
     {
         if (other.tag.Equals("OneWayPlatformTrigger"))
         {
-            Physics.IgnoreLayerCollision(9, 10, false);
+            if(other.gameObject.transform.position.y < gameObject.transform.position.y)
+            {
+                Physics.IgnoreLayerCollision(9, 10, false);
+            }
+            else
+            {
+                Physics.IgnoreLayerCollision(9, 10, true);
+            }
+            
         }
     }
 }

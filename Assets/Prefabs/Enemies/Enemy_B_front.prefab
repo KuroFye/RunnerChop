@@ -121,7 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80428aa5b17d1f74286375a857eb93d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreGiven: 10
+  scoreGiven: 20
   livesGiven: 0
 --- !u!114 &3109001092124375926
 MonoBehaviour:

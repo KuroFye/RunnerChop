@@ -43,6 +43,8 @@ public class PlatformSpawner : MonoBehaviour
             if(chance < spaceChance)
             {                
                 distance = Random.Range(minSpaceDistance, maxSpaceDistance);
+                if(lastPlatformRef == null)
+                    lastPlatformRef = Instantiate(objectsToSpawn[0].objectRef, (gameObject.transform.position + objectsToSpawn[0].offsetPosition), objectsToSpawn[0].offsetRotation);
                 StartCoroutine("CheckDistance");
             }
             else
