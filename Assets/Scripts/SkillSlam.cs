@@ -10,7 +10,7 @@ public class SkillSlam : MonoBehaviour
     float cooldown;
     GameObject playerRef;
     Locomotion playerLocomotion;
-    bool didSlam = false;
+    bool didSlam = false, initialized = false;
 
     // Start is called before the first frame update
     void Start()
@@ -54,11 +54,12 @@ public class SkillSlam : MonoBehaviour
         didSlam = false;
     }
 
-    void OnEnable()
-    {        
+    public void RestartSkill()
+    {
         StopCoroutine("Countdown");
         didSlam = false;
         cooldown = playerLocomotion.crouchCooldown;
         collider.gameObject.SetActive(false);
     }
+
 }

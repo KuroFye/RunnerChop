@@ -157,10 +157,11 @@ public class Locomotion : MonoBehaviour
         canCrouch = true;
     }
 
-    void OnEnable()
+    public void RestartLocomotion()
     {
         anim.SetFloat("Forward", 1f);
         rigidbody.velocity = new Vector3(0, 0, 0);
     }
+
 
 }

@@ -86,6 +86,7 @@ public class GameManager : MonoBehaviour
         SetScore(0);
         totalSpeedMultiplier = speedMultiplier;
         originalSpeed = gameSpeed;
+        FindObjectOfType<SpawnerController>().InitializeSpawnerController();
         StartCoroutine("GameStartCountdown");
     }
 
@@ -198,6 +199,8 @@ public class GameManager : MonoBehaviour
         UIref.boardText.text = "";        
         playerRef.gameObject.SetActive(true);
         playerRef.gameObject.transform.position = playerStart.transform.position;
+        playerRef.GetComponent<Locomotion>().RestartLocomotion();
+        playerRef.GetComponentInChildren<SkillSlam>().RestartSkill();
         
         gameSpeed = baseGameSpeed;
         Physics.IgnoreLayerCollision(9, 10, false);

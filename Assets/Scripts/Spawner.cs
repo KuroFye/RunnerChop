@@ -16,6 +16,7 @@ public class Spawner : MonoBehaviour
     [SerializeField]
     public List<SpawnableObject> objectsToSpawn = new List<SpawnableObject>();
     public int difficultyLevelNeeded = 1;
+    public bool useTimeToSpawn = false;
     public float minTime = 1f, maxTime = 2f;
     float countdown;
     int lastItemIndex;
@@ -26,13 +27,16 @@ public class Spawner : MonoBehaviour
         lastItemIndex = objectsToSpawn.Count;
         if (GameManager.instance.difficulty < difficultyLevelNeeded)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!useTimeToSpawn)
+            return;
+
         if (GameManager.instance.gameSpeed == 0)
             return;
 
@@ -60,5 +64,11 @@ public class Spawner : MonoBehaviour
         int itemIndex = Random.Range(0, lastItemIndex);
         Instantiate(objectsToSpawn[itemIndex].objectRef, (gameObject.transform.position + objectsToSpawn[itemIndex].offsetPosition), objectsToSpawn[itemIndex].objectRef.transform.rotation);
         isWaiting = false;
+    }
+
+    public GameObject SpawnObject()
+    {
+        int itemIndex = Random.Range(0, lastItemIndex);
+        return Instantiate(objectsToSpawn[itemIndex].objectRef, (gameObject.transform.position + objectsToSpawn[itemIndex].offsetPosition), objectsToSpawn[itemIndex].objectRef.transform.rotation);
     }
 }

@@ -8,7 +8,7 @@ public class PlatformSpawner : MonoBehaviour
     [SerializeField]
     public List<SpawnableObject> objectsToSpawn = new List<SpawnableObject>();
 
-    public float spaceChance = 0.3f, minSpaceDistance = 7.5f, maxSpaceDistance = 18f;
+    public float spaceChance = 0.3f, minSpaceDistance = 8.5f, maxSpaceDistance = 19f;
     GameObject lastPlatformRef;
     float distance;
     bool isAfterHole = false;
@@ -27,7 +27,6 @@ public class PlatformSpawner : MonoBehaviour
     private IEnumerator CheckDistance()
     {
         float currentDistance = Vector3.Distance(gameObject.transform.position, lastPlatformRef.transform.position);
-        
         while (currentDistance < distance)
         {
             currentDistance = Vector3.Distance(gameObject.transform.position, lastPlatformRef.transform.position);
