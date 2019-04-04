@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
 
 
     int score = 0, lives = 4;
+    float housePercent = 1f;
     [HideInInspector]
     public int difficulty = 1;
 
@@ -124,6 +125,22 @@ public class GameManager : MonoBehaviour
         difficulty = level;
     }
 
+    /// <summary>
+    /// Amount equals percentage from 1 to 100
+    /// </summary>
+    /// <param name="amount"></param>
+    public void DamageHome(float amount)
+    {
+        housePercent -= amount;
+        UIref.UpdateHomePercentage(housePercent);
+        if (housePercent <= 0f)
+        {
+            gameSpeed = 0f;
+            UIref.boardText.text = "Game ended! \nHouse was destroyed \nYou scored: " + score.ToString();
+            StartCoroutine("ReturnToSelectionCountdown");
+        }
+    }
+
     private IEnumerator GameStartCountdown()
     {
         float normalizedTime = 0;
@@ -132,10 +149,10 @@ public class GameManager : MonoBehaviour
             normalizedTime += Time.deltaTime;
             if(normalizedTime <= 1f)
             {
-                UIref.boardText.text = "3..";
+                UIref.boardText.text = "Protect Home!";
             }else if(normalizedTime <= 2f)
             {
-                UIref.boardText.text = "2..";
+                UIref.boardText.text = "From invaders!";
             }
             else if (normalizedTime <= 3f)
             {
@@ -174,7 +191,8 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            UIref.boardText.text = "Game ended! \nYou scored: "+score.ToString();
+            gameSpeed = 0f;
+            UIref.boardText.text = "Game ended! \nNo lives remain \nYou scored: "+score.ToString();
             StartCoroutine("ReturnToSelectionCountdown");
         }
     }
