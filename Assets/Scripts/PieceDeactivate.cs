@@ -26,7 +26,7 @@ public class PieceDeactivate : MonoBehaviour
         {
             if (other.tag.Equals("Enemy"))
             {
-                GameManager.instance.DamageHome(0.1f);
+                GameManager.instance.DamageHome(0.01f);
             }
             Destroy(other.gameObject);
         }

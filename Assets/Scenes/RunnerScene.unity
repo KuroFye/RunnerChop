@@ -7034,6 +7034,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4642947707296221079, guid: 6a5e7fadd481682469dcdb4403f19c22,
         type: 3}
+      propertyPath: objectsToSpawn.Array.size
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4642947707296221079, guid: 6a5e7fadd481682469dcdb4403f19c22,
+        type: 3}
       propertyPath: difficultyLevelNeeded
       value: 3
       objectReference: {fileID: 0}
