@@ -21,6 +21,10 @@ public class PieceDeactivate : MonoBehaviour
         if (other.tag.Equals("Player"))
         {
             other.gameObject.SetActive(false);
+
+        }else if (other.tag.Equals("Damage"))
+        {
+            //ignore damage colliders
         }
         else
         {
